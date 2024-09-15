@@ -1,70 +1,176 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, FlatList, View, TouchableOpacity, useColorScheme, Platform, StatusBar, Animated } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+// import { SearchBar } from '@/components/SearchBar'; // Assume this component exists
+
+interface Conversation {
+  id: string;
+  name: string;
+  lastMessage: string;
+  time: string;
+}
+
+const dummyConversations: Conversation[] = [
+  { id: '1', name: 'John Doe', lastMessage: 'Hey, how are you?', time: '10:30 AM' },
+  { id: '2', name: 'Jane Smith', lastMessage: "Don't forget about our meeting", time: 'Yesterday' },
+  { id: '3', name: 'Alejandra Yahn', lastMessage: 'Who the fuck is Alice', time: 'Tue' },
+  // Add more dummy conversations as needed
+];
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+  const [scrollY] = useState(new Animated.Value(0));
+  const colorScheme = useColorScheme();
+
+  const titleScale = scrollY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [1, 0.8],
+    extrapolate: 'clamp',
+  });
+
+  const titleTranslateY = scrollY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [0, -10],
+    extrapolate: 'clamp',
+  });
+
+  const renderItem = ({ item }: { item: Conversation }) => (
+    <TouchableOpacity style={styles.conversationItem}>
+      <View style={styles.avatar}>
+        <ThemedText style={styles.avatarText}>{item.name[0]}</ThemedText>
+      </View>
+      <View style={styles.conversationDetails}>
+        <View style={styles.conversationHeader}>
+          <ThemedText style={styles.name}>{item.name}</ThemedText>
+          <ThemedText style={styles.time}>{item.time}</ThemedText>
+        </View>
+        <ThemedText style={styles.lastMessage} numberOfLines={1}>
+          {item.lastMessage}
+        </ThemedText>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+    <SafeAreaView style={styles.container} edges={['right', 'left']}>
+      <ThemedView style={[styles.header, { paddingTop: insets.top }]}>
+        <View style={styles.topRow}>
+          <TouchableOpacity style={styles.editButton}>
+            <ThemedText style={styles.editButtonText}>Edit</ThemedText>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.composeButton}>
+            <Ionicons name="create-outline" size={24} color="#007AFF" />
+          </TouchableOpacity>
+        </View>
+        <Animated.View style={[styles.titleContainer, { transform: [{ scale: titleScale }, { translateY: titleTranslateY }] }]}>
+          <ThemedText style={styles.title}>SmoothTalk Free Beta</ThemedText>
+        </Animated.View>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <Animated.FlatList
+        data={dummyConversations}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        style={styles.list}
+        contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 100 }]}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  header: {
     position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    height: 44,
+  },
+  titleContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 16, // Increased padding
+  },
+  title: {
+    fontSize: 38, // Increased font size
+    fontWeight: 'bold',
+    lineHeight: 48, // Added line height to prevent text from being cut off
+  },
+  editButton: {
+    zIndex: 2,
+    justifyContent: 'center',
+    height: 44,
+  },
+  editButtonText: {
+    color: '#007AFF',
+    fontSize: 20,
+  },
+  composeButton: {
+    zIndex: 2,
+    justifyContent: 'center',
+    height: 44,
+  },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    // paddingTop is now set dynamically in the component
+  },
+  conversationItem: {
+    flexDirection: 'row',
+    padding: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#C8C8C8',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#007AFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  avatarText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  conversationDetails: {
+    flex: 1,
+  },
+  conversationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  time: {
+    fontSize: 14,
+    color: '#8E8E93',
+  },
+  lastMessage: {
+    fontSize: 14,
+    color: '#8E8E93',
   },
 });
