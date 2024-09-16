@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, FlatList, View, TouchableOpacity, useColorScheme, Platform, StatusBar, Animated } from 'react-native';
+import { StyleSheet, FlatList, View, TouchableOpacity, useColorScheme, Platform, StatusBar, Animated, Alert } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 // import { SearchBar } from '@/components/SearchBar'; // Assume this component exists
@@ -25,6 +25,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const [scrollY] = useState(new Animated.Value(0));
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   const titleScale = scrollY.interpolate({
     inputRange: [0, 50],
@@ -37,6 +38,12 @@ export default function HomeScreen() {
     outputRange: [0, -10],
     extrapolate: 'clamp',
   });
+
+  const handleComposePress = () => {
+    console.log('Compose button pressed');
+    router.push('/modal');
+  };
+
 
   const renderItem = ({ item }: { item: Conversation }) => (
     <TouchableOpacity style={styles.conversationItem}>
@@ -62,7 +69,7 @@ export default function HomeScreen() {
           <TouchableOpacity style={styles.editButton}>
             <ThemedText style={styles.editButtonText}>Edit</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.composeButton}>
+          <TouchableOpacity style={styles.composeButton} onPress={handleComposePress}>
             <Ionicons name="create-outline" size={24} color="#007AFF" />
           </TouchableOpacity>
         </View>
