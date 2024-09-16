@@ -41,7 +41,7 @@ export default function HomeScreen() {
 
   const handleComposePress = () => {
     console.log('Compose button pressed');
-    router.push('/modal');
+    router.push('/compose');
   };
 
 
