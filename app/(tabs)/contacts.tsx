@@ -28,6 +28,10 @@ export default function ContactsScreen() {
     router.push(`/contact/${id}`);
   };
 
+  const handleAddContact = () => {
+    router.push('/add-contact');
+  };
+
   const renderItem = ({ item }: { item: Contact }) => (
     <TouchableOpacity style={styles.contactItem} onPress={() => handleContactPress(item.id)}>
       <View style={styles.avatar}>
@@ -47,7 +51,7 @@ export default function ContactsScreen() {
           <TouchableOpacity style={styles.sortButton}>
             <ThemedText style={styles.sortButtonText}>Sort</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addButton}>
+          <TouchableOpacity style={styles.addButton} onPress={handleAddContact}>
             <Ionicons name="add" size={24} color="#007AFF" />
           </TouchableOpacity>
         </View>

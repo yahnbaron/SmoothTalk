@@ -59,6 +59,18 @@ export default function RootLayout() {
             headerBackTitle: 'Contacts',
           }}
         />
+        <Stack.Screen
+          name="add-contact"
+          options={{
+            presentation: 'modal',
+            title: 'New Contact',
+            headerRight: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Text style={{ color: '#007AFF', fontSize: 17, marginRight: 10 }}>Cancel</Text>
+              </TouchableOpacity>
+            ),
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );
