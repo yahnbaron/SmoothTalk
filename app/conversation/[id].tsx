@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Message {
   id: string;
@@ -19,10 +20,13 @@ export default function ConversationScreen() {
     { id: '2', text: 'Hi! How are you?', sender: 'user', timestamp: new Date() },
   ]);
   const [newMessage, setNewMessage] = useState('');
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+  const insets = useSafeAreaInsets();
 
   const renderMessage = ({ item }: { item: Message }) => (
     <View style={[styles.messageBubble, item.sender === 'user' ? styles.userMessage : styles.otherMessage]}>
-      <ThemedText>{item.text}</ThemedText>
+      <ThemedText style={item.sender === 'user' ? styles.userMessageText : styles.otherMessageText}>{item.text}</ThemedText>
     </View>
   );
 
@@ -39,31 +43,34 @@ export default function ConversationScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <FlatList
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.messageList}
-      />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={100}
-      >
-        <View style={styles.inputContainer}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 0}
+    >
+      <ThemedView style={styles.innerContainer}>
+        <FlatList
+          data={messages}
+          renderItem={renderMessage}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.messageList}
+        />
+        <View style={[styles.inputContainer, { paddingBottom: Math.max(insets.bottom, 5) }]}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, isDarkMode && styles.darkInput]}
             value={newMessage}
             onChangeText={setNewMessage}
             placeholder="Type a message..."
-            placeholderTextColor="#999"
+            placeholderTextColor={isDarkMode ? '#999' : '#666'}
+            multiline
+            textAlignVertical="top"
           />
-          <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-            <Ionicons name="send" size={24} color="#007AFF" />
+          <TouchableOpacity onPress={sendMessage} style={styles.sendButton} disabled={!newMessage.trim()}>
+            <Ionicons name="send" size={24} color={newMessage.trim() ? '#007AFF' : '#999'} />
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
-    </ThemedView>
+      </ThemedView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -71,8 +78,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  innerContainer: {
+    flex: 1,
+  },
   messageList: {
     paddingHorizontal: 10,
+    flexGrow: 1,
   },
   messageBubble: {
     maxWidth: '80%',
@@ -86,13 +97,21 @@ const styles = StyleSheet.create({
   },
   otherMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: '#E5E5EA',
+    backgroundColor: '#303030', // Darker gray for better contrast
+  },
+  userMessageText: {
+    color: '#FFFFFF',
+  },
+  otherMessageText: {
+    color: '#FFFFFF',
   },
   inputContainer: {
     flexDirection: 'row',
     padding: 10,
+    paddingBottom: 15, // Increased bottom padding
     borderTopWidth: 1,
     borderTopColor: '#E5E5EA',
+    alignItems: 'flex-end', // Align items to the bottom
   },
   input: {
     flex: 1,
@@ -101,9 +120,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     marginRight: 10,
+    color: '#000000',
+    maxHeight: 100, // Set a maximum height
+    minHeight: 40, // Set a minimum height
+  },
+  darkInput: {
+    color: '#FFFFFF',
+    borderColor: '#303030',
   },
   sendButton: {
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'flex-end', // Align the button to the bottom
+    marginBottom: 5, // Add some margin to align with the text input
   },
 });
