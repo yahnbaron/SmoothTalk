@@ -9,15 +9,14 @@ interface ContactDetail {
   id: string;
   name: string;
   phoneNumber: string;
-  email: string;
-  address: string;
+  username: string;
 }
 
 // This would typically come from a database or API
 const dummyContactDetails: { [key: string]: ContactDetail } = {
-  '1': { id: '1', name: 'John Doe', phoneNumber: '+1 (555) 123-4567', email: 'john.doe@example.com', address: '123 Main St, Anytown, USA' },
-  '2': { id: '2', name: 'Jane Smith', phoneNumber: '+1 (555) 987-6543', email: 'jane.smith@example.com', address: '456 Elm St, Somewhere, USA' },
-  '3': { id: '3', name: 'Alice Johnson', phoneNumber: '+1 (555) 246-8135', email: 'alice.johnson@example.com', address: '789 Oak St, Nowhere, USA' },
+  '1': { id: '1', name: 'John Doe', phoneNumber: '+1 (555) 123-4567', username: 'johndoe' },
+  '2': { id: '2', name: 'Jane Smith', phoneNumber: '+1 (555) 987-6543', username: 'janesmith' },
+  '3': { id: '3', name: 'Alice Johnson', phoneNumber: '+1 (555) 246-8135', username: 'alicej' },
 };
 
 export default function ContactDetailScreen() {
@@ -42,8 +41,7 @@ export default function ContactDetailScreen() {
       </View>
       <View style={styles.detailsContainer}>
         <DetailItem icon="call" label="Phone" value={contact.phoneNumber} />
-        <DetailItem icon="mail" label="Email" value={contact.email} />
-        <DetailItem icon="location" label="Address" value={contact.address} />
+        <DetailItem icon="at" label="Username" value={contact.username} />
       </View>
     </ScrollView>
   );
