@@ -52,6 +52,13 @@ export default function RootLayout() {
             headerBackTitle: 'Back',
           }}
         />
+        <Stack.Screen
+          name="contact/[id]"
+          options={{
+            title: 'Contact Details',
+            headerBackTitle: 'Contacts',
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

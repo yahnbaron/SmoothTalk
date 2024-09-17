@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -21,9 +22,14 @@ const dummyContacts: Contact[] = [
 
 export default function ContactsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  const handleContactPress = (id: string) => {
+    router.push(`/contact/${id}`);
+  };
 
   const renderItem = ({ item }: { item: Contact }) => (
-    <TouchableOpacity style={styles.contactItem}>
+    <TouchableOpacity style={styles.contactItem} onPress={() => handleContactPress(item.id)}>
       <View style={styles.avatar}>
         <ThemedText style={styles.avatarText}>{item.name[0]}</ThemedText>
       </View>
