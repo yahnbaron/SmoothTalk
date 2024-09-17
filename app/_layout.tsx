@@ -45,6 +45,13 @@ export default function RootLayout() {
             ),
           }}
         />
+        <Stack.Screen
+          name="conversation/[id]"
+          options={{
+            title: 'Conversation',
+            headerBackTitle: 'Back',
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

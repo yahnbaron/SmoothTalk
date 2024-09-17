@@ -44,9 +44,12 @@ export default function HomeScreen() {
     router.push('/compose');
   };
 
+  const handleConversationPress = (id: string) => {
+    router.push(`/conversation/${id}`);
+  };
 
   const renderItem = ({ item }: { item: Conversation }) => (
-    <TouchableOpacity style={styles.conversationItem}>
+    <TouchableOpacity style={styles.conversationItem} onPress={() => handleConversationPress(item.id)}>
       <View style={styles.avatar}>
         <ThemedText style={styles.avatarText}>{item.name[0]}</ThemedText>
       </View>
