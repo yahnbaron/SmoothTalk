@@ -17,6 +17,7 @@
       "bundleIdentifier": "com.anonymous.SmoothTalk"
     },
     "android": {
+      "package": "com.anonymous.SmoothTalk",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -32,6 +33,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "30025b0f-f5c0-43fa-983a-dca2e075df2d"
+      }
     }
   }
 }
