@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
+# 🌍 SmoothTalk
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<div align="center">
 
-## Get started
+![SmoothTalk Logo](https://via.placeholder.com/150?text=SmoothTalk)
 
-1. Install dependencies
+**Talk like a local to anyone, anywhere in the world. Except North Korea.**
 
-   ```bash
-   npm install
-   ```
+[![Made with Expo](https://img.shields.io/badge/Made%20with-Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.dev/)
 
-2. Start the app
+</div>
 
-   ```bash
-    npx expo start
-   ```
+## 🎉 Welcome to SmoothTalk!
 
-In the output, you'll find options to open the app in a
+SmoothTalk is your gateway to seamless global communication. Break down language barriers and connect with people from all corners of the world, fostering understanding and friendship across cultures.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🚀 Features
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Real-time language translation
+- Cultural context suggestions
+- Slang and idioms all translated to regional equivalents
+- Customizable user profiles
 
-## Get a fresh project
+## 📝 To-Do List
 
-When you're ready, run:
+We're constantly improving SmoothTalk to enhance your experience. Here's what we're working on:
 
-```bash
-npm run reset-project
-```
+- [ ] **Authentication Screen**: Create a secure and user-friendly authentication screen for account management.
+- [ ] **Profile Creation**: Implement a feature for users to create their profiles.
+- [ ] **Add Contacts**: Hook up contact creation to the back-end.
+- [ ] **Automatic Conversation Initiation**: When a new contact is saved, automatically open a new conversation with that contact.
+- [ ] **Functional Conversation Screen**: Hook the existing conversation screen up to the back-end to become fully functional.
+- [ ] **Regional Dialect Settings**: Allow users to select their regional dialects.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
+### 📝 Stretch Goals
+- [ ] **Omegle-style Random Conversation**: Allow users to connect with a foreign person and start a conversation.
 
-To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<div align="center">
+  Made with ❤️ by the SmoothTalk Team
+</div>
