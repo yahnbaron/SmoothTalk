@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, useColorScheme, Modal } from 'react-native';
-import RegisterScreen from './components/RegisterScreen';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
 
-interface AuthScreenProps {
-  onLogin: () => void;
+interface RegisterScreenProps {
+  onClose: () => void;
 }
 
-export default function AuthScreen({ onLogin }: AuthScreenProps) {
+export default function RegisterScreen({ onClose }: RegisterScreenProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showRegister, setShowRegister] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const colorScheme = useColorScheme();
 
-  const handleLogin = () => {
-    // Dummy login functionality
-    console.log('Login attempt with:', username, password);
-    // Simulate successful login
-    onLogin();
+  const handleRegister = () => {
+    // TODO: Implement registration logic
+    console.log('Register attempt with:', username, password);
+    // For now, just close the modal
+    onClose();
   };
 
   const isDarkMode = colorScheme === 'dark';
 
   return (
     <View style={[styles.container, isDarkMode && styles.containerDark]}>
-      <Text style={[styles.title, isDarkMode && styles.textDark]}>Login</Text>
+      <Text style={[styles.title, isDarkMode && styles.textDark]}>Register</Text>
       <TextInput
         style={[styles.input, isDarkMode && styles.inputDark]}
         placeholder="Username"
@@ -40,15 +39,20 @@ export default function AuthScreen({ onLogin }: AuthScreenProps) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TextInput
+        style={[styles.input, isDarkMode && styles.inputDark]}
+        placeholder="Confirm Password"
+        placeholderTextColor={isDarkMode ? '#888' : '#999'}
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        secureTextEntry
+      />
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.registerButton} onPress={() => setShowRegister(true)}>
-        <Text style={[styles.registerButtonText, isDarkMode && styles.textDark]}>Register</Text>
+      <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+        <Text style={[styles.closeButtonText, isDarkMode && styles.textDark]}>Cancel</Text>
       </TouchableOpacity>
-      <Modal visible={showRegister} animationType="slide">
-        <RegisterScreen onClose={() => setShowRegister(false)} />
-      </Modal>
     </View>
   );
 }
@@ -91,16 +95,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     padding: 10,
     borderRadius: 5,
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  registerButton: {
-    marginTop: 10,
+  closeButton: {
+    padding: 10,
   },
-  registerButtonText: {
+  closeButtonText: {
     color: '#007AFF',
     textAlign: 'center',
     fontWeight: 'bold',
