@@ -7,13 +7,32 @@ import 'react-native-reanimated';
 import { TouchableOpacity, Text } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import AuthScreen from './auth';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayoutNav() {
+  const { isAuthenticated, login } = useAuth();
   const colorScheme = useColorScheme();
   const router = useRouter();
+
+  if (!isAuthenticated) {
+    return <AuthScreen onLogin={login} />;
+  }
+
+  return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* ... other Stack.Screen components ... */}
+      </Stack>
+    </ThemeProvider>
+  );
+}
+
+export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -29,49 +48,8 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen
-          name="compose"
-          options={{
-            presentation: 'modal',
-            title: 'New Message',
-            headerRight: () => (
-              <TouchableOpacity onPress={() => router.back()}>
-                <Text style={{ color: '#007AFF', fontSize: 17, marginRight: 10 }}>Cancel</Text>
-              </TouchableOpacity>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="conversation/[id]"
-          options={{
-            title: 'Conversation',
-            headerBackTitle: 'Back',
-          }}
-        />
-        <Stack.Screen
-          name="contact/[id]"
-          options={{
-            title: 'Contact Details',
-            headerBackTitle: 'Contacts',
-          }}
-        />
-        <Stack.Screen
-          name="add-contact"
-          options={{
-            presentation: 'modal',
-            title: 'New Contact',
-            headerRight: () => (
-              <TouchableOpacity onPress={() => router.back()}>
-                <Text style={{ color: '#007AFF', fontSize: 17, marginRight: 10 }}>Cancel</Text>
-              </TouchableOpacity>
-            ),
-          }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }

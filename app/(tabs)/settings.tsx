@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, View, TouchableOpacity, Text } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth } from '../contexts/AuthContext';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -20,6 +21,15 @@ const dummySettings: SettingsItem[] = [
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const renderItem = ({ item }: { item: SettingsItem }) => (
     <TouchableOpacity style={styles.settingsItem}>
@@ -44,6 +54,9 @@ export default function SettingsScreen() {
         style={styles.list}
         contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 100 }]}
       />
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>Logout</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -89,6 +102,18 @@ const styles = StyleSheet.create({
     borderBottomColor: '#C8C8C8',
   },
   settingsItemText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  logoutButton: {
+    backgroundColor: '#ff3b30',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  logoutButtonText: {
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
