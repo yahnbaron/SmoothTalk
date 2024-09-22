@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +14,9 @@ interface Message {
 }
 
 export default function ConversationScreen() {
-  const { id } = useLocalSearchParams();
+  const { id, name } = useLocalSearchParams<{ id: string, name: string }>();
+  const navigation = useNavigation();
+  const [contactName, setContactName] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', text: 'Hey there!', sender: 'other', timestamp: new Date() },
     { id: '2', text: 'Hi! How are you?', sender: 'user', timestamp: new Date() },
@@ -23,6 +25,14 @@ export default function ConversationScreen() {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (name) {
+      navigation.setOptions({
+        title: name,
+      });
+    }
+  }, [name, navigation]);
 
   const renderMessage = ({ item }: { item: Message }) => (
     <View style={[styles.messageBubble, item.sender === 'user' ? styles.userMessage : styles.otherMessage]}>
@@ -72,6 +82,13 @@ export default function ConversationScreen() {
       </ThemedView>
     </KeyboardAvoidingView>
   );
+}
+
+// Placeholder function to get contact name
+async function getContactName(id: string): Promise<string> {
+  // In a real app, this would fetch the name from your data source
+  // For now, we'll return a dummy name based on the id
+  return `Contact ${id}`;
 }
 
 const styles = StyleSheet.create({
