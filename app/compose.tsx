@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, useColorScheme, TouchableOpacity, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 
 export default function ComposeModal() {
   const [recipient, setRecipient] = useState('');
@@ -10,6 +10,7 @@ export default function ComposeModal() {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
   const navigation = useNavigation();
+  const router = useRouter();
 
   useEffect(() => {
     recipientInputRef.current?.focus();
@@ -29,9 +30,15 @@ export default function ComposeModal() {
 
   const handleSend = () => {
     if (canSend) {
-      // TODO: Implement send functionality
+      // TODO: Implement actual send functionality
       console.log('Sending message to:', recipient);
       console.log('Message:', message);
+      
+      // Replace the current screen with the conversation view
+      router.replace({
+        pathname: '/conversation/[id]',
+        params: { id: 'new', name: recipient }
+      });
     }
   };
 

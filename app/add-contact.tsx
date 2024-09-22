@@ -30,9 +30,14 @@ export default function AddContactModal() {
   }, [navigation]);
 
   const handleSave = () => {
-    // TODO: Implement save functionality
+    // TODO: Implement actual save functionality
     console.log('Saving new contact:', { name, phoneNumber, username });
-    router.back();
+    
+    // Replace the current screen with the conversation view
+    router.replace({
+      pathname: '/conversation/[id]',
+      params: { id: 'new', name: name }
+    });
   };
 
   const renderInput = (label: string, value: string, onChangeText: (text: string) => void, placeholder: string, ref?: React.RefObject<TextInput>) => (
