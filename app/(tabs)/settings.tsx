@@ -13,9 +13,7 @@ interface SettingsItem {
 
 const dummySettings: SettingsItem[] = [
   { id: '1', title: 'Account' },
-  { id: '2', title: 'Notifications' },
-  { id: '3', title: 'Privacy' },
-  { id: '4', title: 'General' },
+  { id: '2', title: 'Language / Region' },
   // Add more settings items as needed
 ];
 
@@ -54,7 +52,13 @@ export default function SettingsScreen() {
         style={styles.list}
         contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 100 }]}
       />
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+      <TouchableOpacity 
+        style={[
+          styles.logoutButton, 
+          { marginBottom: insets.bottom }
+        ]} 
+        onPress={handleLogout}
+      >
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -111,6 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     marginTop: 20,
+    marginHorizontal: 20, // Add horizontal margin for consistency
   },
   logoutButtonText: {
     color: 'white',
