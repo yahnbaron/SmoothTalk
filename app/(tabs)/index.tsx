@@ -46,8 +46,8 @@ export default function HomeScreen() {
 
   const handleConversationPress = (id: string, name: string) => {
     router.push({
-      pathname: `/conversation/${id}`,
-      params: { name }
+      pathname: '/conversation/[id]',
+      params: { id, name }
     });
   };
 
@@ -93,7 +93,7 @@ export default function HomeScreen() {
         style={styles.list}
         contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 100 }]}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }], // Removed the second argument
           { useNativeDriver: true }
         )}
         scrollEventThrottle={16}

@@ -30,6 +30,12 @@ export default function ConversationScreen() {
     if (name) {
       navigation.setOptions({
         title: name,
+        headerBackTitle: ' ', // This sets the back button text to a space (effectively hiding it)
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={24} color="#007AFF" />
+          </TouchableOpacity>
+        ),
       });
     }
   }, [name, navigation]);
