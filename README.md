@@ -25,10 +25,10 @@ SmoothTalk is your gateway to seamless global communication. Break down language
 
 We're constantly improving SmoothTalk to enhance your experience. Here's what we're working on:
 
-- [ ] **Authentication Screen**: Create a secure and user-friendly authentication screen for account management.
-- [ ] **Profile Creation**: Implement a feature for users to create their profiles.
+- [x] **Authentication Screen**: Create a secure and user-friendly authentication screen for account management.
+- [x] **Profile Creation**: Implement a feature for users to create their profiles.
 - [ ] **Add Contacts**: Hook up contact creation to the back-end.
-- [ ] **Automatic Conversation Initiation**: When a new contact is saved, automatically open a new conversation with that contact.
+- [x] **Automatic Conversation Initiation**: When a new contact is saved, automatically open a new conversation with that contact.
 - [ ] **Functional Conversation Screen**: Hook the existing conversation screen up to the back-end to become fully functional.
 - [ ] **Regional Dialect Settings**: Allow users to select their regional dialects.
 
