@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,8 +20,23 @@ const dummyContactDetails: { [key: string]: ContactDetail } = {
 };
 
 export default function ContactDetailScreen() {
-  const { id } = useLocalSearchParams();
+  const { id, name } = useLocalSearchParams<{ id: string, name: string }>();
+  const navigation = useNavigation();
   const contact = dummyContactDetails[id as string];
+
+  useEffect(() => {
+    if (name) {
+      navigation.setOptions({
+        title: name,
+        headerBackTitle: ' ', // This sets the back button text to a space (effectively hiding it)
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={24} color="#007AFF" />
+          </TouchableOpacity>
+        ),
+      });
+    }
+  }, [name, navigation]);
 
   if (!contact) {
     return (

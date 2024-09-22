@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, useColorScheme, TouchableOpacity, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
 
 export default function ComposeModal() {
   const [recipient, setRecipient] = useState('');
@@ -8,10 +9,21 @@ export default function ComposeModal() {
   const recipientInputRef = useRef<TextInput>(null);
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
+  const navigation = useNavigation();
 
   useEffect(() => {
     recipientInputRef.current?.focus();
-  }, []);
+
+    navigation.setOptions({
+      title: 'New Message',
+      headerBackTitle: ' ', // This sets the back button text to a space (effectively hiding it)
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   const canSend = recipient.trim() !== '' && message.trim() !== '';
 

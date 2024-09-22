@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, SafeAreaView, useColorScheme, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useNavigation } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -12,11 +12,22 @@ export default function AddContactModal() {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
   const router = useRouter();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
     nameInputRef.current?.focus();
-  }, []);
+
+    navigation.setOptions({
+      title: 'Add Contact',
+      headerBackTitle: ' ', // This sets the back button text to a space (effectively hiding it)
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   const handleSave = () => {
     // TODO: Implement save functionality

@@ -24,8 +24,11 @@ export default function ContactsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
-  const handleContactPress = (id: string) => {
-    router.push(`/contact/${id}`);
+  const handleContactPress = (id: string, name: string) => {
+    router.push({
+      pathname: '/contact/[id]',
+      params: { id, name }
+    });
   };
 
   const handleAddContact = () => {
@@ -33,7 +36,7 @@ export default function ContactsScreen() {
   };
 
   const renderItem = ({ item }: { item: Contact }) => (
-    <TouchableOpacity style={styles.contactItem} onPress={() => handleContactPress(item.id)}>
+    <TouchableOpacity style={styles.contactItem} onPress={() => handleContactPress(item.id, item.name)}>
       <View style={styles.avatar}>
         <ThemedText style={styles.avatarText}>{item.name[0]}</ThemedText>
       </View>
