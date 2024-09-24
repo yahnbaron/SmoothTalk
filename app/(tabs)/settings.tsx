@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity, Text } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -12,14 +13,14 @@ interface SettingsItem {
 }
 
 const dummySettings: SettingsItem[] = [
-  { id: '1', title: 'Account' },
-  { id: '2', title: 'Language / Region' },
+  { id: '1', title: 'Dialect' },
   // Add more settings items as needed
 ];
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const { signOut } = useAuth();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
@@ -30,7 +31,14 @@ export default function SettingsScreen() {
   };
 
   const renderItem = ({ item }: { item: SettingsItem }) => (
-    <TouchableOpacity style={styles.settingsItem}>
+    <TouchableOpacity 
+      style={styles.settingsItem}
+      onPress={() => {
+        if (item.title === 'Dialect') {
+          router.push('/settings/dialect');  // Note the lowercase 'd'
+        }
+      }}
+    >
       <ThemedText style={styles.settingsItemText}>{item.title}</ThemedText>
     </TouchableOpacity>
   );
