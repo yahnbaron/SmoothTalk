@@ -41,12 +41,12 @@ export default function DialectSettings() {
     },
   };
 
-  const openPicker = (pickerType) => {
+  const openPicker = (pickerType: any) => {
     setCurrentPicker(pickerType);
     setModalVisible(true);
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity
       style={styles.modalItem}
       onPress={() => {
